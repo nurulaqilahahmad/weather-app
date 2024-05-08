@@ -1,53 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Application</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
+
 <body>
 
     <div class="title">
         <h3>Weather Application</h1>
-        <hr>
+            <hr>
     </div>
 
     <div class="error">
         <p>Error occured!</p>
     </div>
 
-    <div class="location-time">
-        <h2 class="city">Kuala Lumpur</h2>
-    </div>
+    <div class="weather-report">
+        <div class="location-time">
+            <h2 class="city"></h2>
+        </div>
 
-    <div class="weather-temperature">
-        <img src="assets/rain.png" alt="weatherImage" class="weatherImage">
-        <h1 class="temperature">20°C</h1>
-    </div>
+        <div class="weather-temperature">
+            <img src="" alt="weatherImage" class="weatherImage">
+            <h1 class="temperature"></h1>
+        </div>
 
-    <div class="weather-details">
-        <div class="condition">
-            <span>©</span>
-            <p>CONDITION</p>            
-            <h3>Cloudy night</h3>
-        </div>
-        <div class="line">
-            <div class="vertical-line"></div>
-        </div>
-        <div class="temperature">
-            <span>©</span>
-            <p>TEMPERATURE</p>            
-            <h3>22°</h3>
-        </div>
-        <div class="line">
-            <div class="vertical-line"></div>
-        </div>
-        <div class="forecast">
-            <span>©</span>
-            <p>FORECAST</p>            
-            <h3>8.00 am, 25°</h3>
+        <div class="weather-details">
+            <div class="condition-sect">
+                <i class="material-icons icon">hvac</i>
+                <p>CONDITION</p>
+                <h3 class="condition-desc"></h3>
+            </div>
+            <div class="line">
+                <div class="vertical-line"></div>
+            </div>
+            <div class="temperature-sect">
+                <i class="material-icons icon">thermostat</i>
+                <p>TEMPERATURE</p>
+                <h3 class="temperature-2"></h3>
+            </div>
+            <div class="line">
+                <div class="vertical-line"></div>
+            </div>
+            <div class="forecast-sect">
+                <i class="material-icons icon">assessment</i>
+                <p>FORECAST</p>
+                <h3 class="forecast"></h3>
+            </div>
         </div>
     </div>
 
@@ -56,38 +61,57 @@
 
         const apiKey = "d2345fb307336028c0d7416cfa897a88";
         const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=kuala%20lumpur&units=metric";
-        const apiUrl2 = "https://api.openweathermap.org/data/2.5/forecast?q=kuala%20lumpur";
+        const apiUrl2 = "https://api.openweathermap.org/data/2.5/forecast?q=kuala%20lumpur&units=metric";
 
         async function checkWeatherForecast() {
             const response = await fetch(apiUrl + `&appid=${apiKey}`);
             const response2 = await fetch(apiUrl2 + `&appid=${apiKey}`);
-            var data = await response.json();
-            var data2 = await response2.json();
 
-            console.log(data);
+            if (response.status == 400) {
+                document.querySelector(".error").style.display = "block";
+                document.querySelector(".weather-report").style.display = "none";
+            }
+            else {
+                document.querySelector(".error").style.display = "none";
+                document.querySelector(".weather-report").style.display = "block";
 
-            document.querySelector(".city").innerHTML = data.name;
-            document.querySelector(".temperature").innerHTML = Math.round(data.main.temp) + "°C";
+                var data = await response.json();
+                var data2 = await response2.json();
 
-            if(data.weather[0].main == "Clouds") {
-                weatherImage.src = "assets/clouds.png"
-            }
-            else if (data.weather[0].main == "Clear") {
-                weatherImage.src = "assets/clear.png"
-            }
-            else if (data.weather[0].main == "Rain") {
-                weatherImage.src = "assets/rain.png"
-            }
-            else if (data.weather[0].main == "Drizzle") {
-                weatherImage.src = "assets/drizzle.png"
-            }
-            else if (data.weather[0].main == "Mist") {
-                weatherImage.src = "assets/mist.png"
+                console.log(data2);
+
+                document.querySelector(".city").innerHTML = data.name;
+                document.querySelector(".temperature").innerHTML = Math.round(data.main.temp) + "°C";
+                document.querySelector(".temperature-2").innerHTML = Math.round(data.main.temp) + "°";
+                document.querySelector(".condition-desc").innerHTML = data.weather[0].description;
+                document.querySelector(".forecast").innerHTML = Math.round(data2.list[0].main.temp) + "° | " + data2.list[0].weather[0].main;
+
+                if (data.weather[0].main == "Clouds") {
+                    weatherImage.src = "assets/clouds.png"
+                }
+                else if (data.weather[0].main == "Clear") {
+                    weatherImage.src = "assets/clear.png"
+                }
+                else if (data.weather[0].main == "Rain") {
+                    weatherImage.src = "assets/rain.png"
+                }
+                else if (data.weather[0].main == "Drizzle") {
+                    weatherImage.src = "assets/drizzle.png"
+                }
+                else if (data.weather[0].main == "Mist") {
+                    weatherImage.src = "assets/mist.png"
+                }
             }
         }
 
         checkWeatherForecast();
+
+        // This is to call the checkWeatherForecast every 5 seconds
+        setInterval(function () {
+            checkWeatherForecast();
+        }, 5000);
     </script>
 
 </body>
+
 </html>

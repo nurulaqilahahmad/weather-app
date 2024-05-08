@@ -28,6 +28,10 @@ hr {
     }
 } */
 
+.weather-report {
+    display: none;
+}
+
 .weather-temperature {
     padding: 10px 0px;
 }
@@ -55,11 +59,26 @@ hr {
     }
 }
 
+.condition-desc {
+    text-transform: capitalize;
+}
+
 .vertical-line {
     border-right: 1px solid white;
-    height: 100px;
+    height: 155px;
     position: absolute;
     @media screen and (max-width: 435px) {
         display: none;
     }
+}
+
+.error {
+    color: red;
+    border-radius: 14px;
+    padding: 2px 96px;
+    display: none;
+}
+
+i.icon {
+    font-size: 3em;
 }

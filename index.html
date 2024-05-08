@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Application</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+</head>
+<body>
+
+    <div class="title">
+        <h3>Weather Application</h1>
+        <hr>
+    </div>
+
+    <div class="location-time">
+        <h2 class="city">Kuala Lumpur</h2>
+    </div>
+
+    <div class="weather-temperature">
+        <img src="assets/rain.png" alt="weatherImage">
+        <h1 class="temperature">20°C</h1>
+    </div>
+
+    <div class="weather-details">
+        <div class="condition">
+            <span>©</span>
+            <p>CONDITION</p>            
+            <h3>Cloudy night</h3>
+        </div>
+        <div class="line">
+            <div class="vertical-line"></div>
+        </div>
+        <div class="temperature">
+            <span>©</span>
+            <p>TEMPERATURE</p>            
+            <h3>22°</h3>
+        </div>
+        <div class="line">
+            <div class="vertical-line"></div>
+        </div>
+        <div class="forecast">
+            <span>©</span>
+            <p>FORECAST</p>            
+            <h3>8.00 am, 25°</h3>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "d2345fb307336028c0d7416cfa897a88";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=kuala%20lumpur&units=metric";
+
+        async function checkWeather() {
+            const response = await fetch(apiUrl + '&appid=${apiKey}');
+            var data = await response.json();
+
+            console.log(data);
+
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".temperature").innerHTML = data.main.temp;
+        }
+    </script>
+
+</body>
+</html>
